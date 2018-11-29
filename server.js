@@ -20,7 +20,7 @@ const server = app.listen(port);
 
 //도메인 연결 페이지 설정
 app.get('/', function(req, res) {
-   res.sendFile(__dirname + '/canvas.html');
+   res.sendFile(__dirname + '/views/canvas.html');
 });
 
 const io = socketio(server); // socket.io와 서버 연결
