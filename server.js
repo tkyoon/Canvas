@@ -18,7 +18,10 @@ var port 	= process.env.PORT || 2600;
 
 const server = app.listen(port);
 
-log.debug('tst');
+//도메인 연결 페이지 설정
+app.get('/', function(req, res) {
+   res.sendFile(__dirname + '/canvas.html');
+});
 
 const io = socketio(server); // socket.io와 서버 연결
 var userCnt = 0;
