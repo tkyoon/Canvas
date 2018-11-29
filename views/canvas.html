@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+<style>
+.paint-canvas {
+  border: 1px black solid;
+  display: block;
+  margin: 1rem;
+}
+
+.js-color-picker {
+  margin: 1rem 1rem 0 1rem;
+}
+</style>
+
+
+<input type="color"  class="js-color-picker">
+<input type="range" class="js-line-range" min="1" max="72" value="1">
+<label class="js-range-value">1</label>Px
+<canvas class="js-paint  paint-canvas" width="600" height="300"></canvas>
+    
+    
+    
+<script>
+const paintCanvas = document.querySelector( '.js-paint' );
+const context = paintCanvas.getContext( '2d' );
+context.lineCap = 'round';
+
+const colorPicker = document.querySelector( '.js-color-picker');
+
+colorPicker.addEventListener( 'change', event => {
+  console.log(event.target.value)
+    context.strokeStyle = event.target.value; 
+} );
+
+const lineWidthRange = document.querySelector( '.js-line-range' );
+const lineWidthLabel = document.querySelector( '.js-range-value' );
+
+lineWidthRange.addEventListener( 'input', event => {
+    const width = event.target.value;
+    lineWidthLabel.innerHTML = width;
+    context.lineWidth = width;
+} );
+
+let x = 0, y = 0;
+let isMouseDown = false;
+
+const stopDrawing = () => {
+	console.log('stopDrawing')
+	isMouseDown = false;
+}
+
+const startDrawing = event => {
+	console.log('startDrawing')
+    isMouseDown = true;   
+	[x, y] = [event.offsetX, event.offsetY];
+	
+	socket.emit('startDrawing', {
+		offsetX		: event.offsetX
+        , offsetY	: event.offsetY
+	});
+}
+
+const rc_startDrawing = (data) => {
+	console.log('rc-startDrawing');
+	console.log(data);
+	if(lvar_socketId != data.id) {
+		[x, y] = [data.offsetX, data.offsetY];
+	}
+}
+
+const drawLine = event => {
+    //console.log(event.offsetX)
+    //console.log(event.offsetY)
+    if ( isMouseDown ) {
+		console.log('drawLine');
+        const newX = event.offsetX;
+        const newY = event.offsetY;
+        context.beginPath();
+        context.moveTo( x, y );
+        context.lineTo( newX, newY );
+        context.stroke();
+        [x, y] = [newX, newY];
+        
+        socket.emit('drawLine', {
+        	offsetX		: event.offsetX
+            , offsetY	: event.offsetY
+           /*  , x	: x
+            , y	: y
+            , newX	: newX
+            , newY	: newY */
+    	});
+    }
+}
+
+const rc_drawLine = data => {
+    if(lvar_socketId != data.id) {
+		console.log('rc_drawLine');
+        const newX = data.offsetX;
+        const newY = data.offsetY;
+        context.beginPath();
+        context.moveTo( x, y );
+        context.lineTo( newX, newY );
+        context.stroke();
+        [x, y] = [newX, newY];
+/*         context.moveTo( data.x, data.y );
+        context.lineTo( data.newX, data.newY );
+        context.stroke();
+        [x, y] = [data.newX, data.newY]; */
+    }
+}
+
+paintCanvas.addEventListener( 'mousedown', startDrawing );
+paintCanvas.addEventListener( 'mousemove', drawLine );
+paintCanvas.addEventListener( 'mouseup', stopDrawing );
+paintCanvas.addEventListener( 'mouseout', stopDrawing );
+
+</script>
+
+<script src = "/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+	var lvar_socketId;
+	console.log('socket load...')
+	var socket = io();
+	
+	//최초 접속 시
+	socket.on('message', function(data) {
+		console.log(data);
+		lvar_socketId = data.id
+	});
+	
+	//그리기 시작
+	socket.on('rc_startDrawing', function(data) {
+		rc_startDrawing(data);
+	});
+	
+	//그리는 중
+	socket.on('rc_drawLine', function(data) {
+		rc_drawLine(data);
+	});
+	
+	socket.on('startDrawing', function(data) {
+		console.log(data);
+	});
+	
+	
+</script>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "Canvas",
+  "version": "0.1.0",
+  "description": "Canvas",
+  "main": "hello-world-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "node.js",
+    "eclipse",
+    "nodeclipse"
+  ],
+  "author": "",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "express": "^4.16.4",
+    "moment": "^2.22.2",
+    "socket.io": "^2.2.0",
+    "tracer": "^0.9.6"
+  }
+}
