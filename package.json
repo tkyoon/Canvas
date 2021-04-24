@@ -2,9 +2,9 @@
   "name": "Canvas",
   "version": "0.1.0",
   "description": "Canvas",
-  "main": "hello-world-server.js",
+  "main": "server.js",
   "scripts": {
-	  "start": "node server.js"
+    "start": "node server.js"
   },
   "repository": "",
   "keywords": [
@@ -18,7 +18,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "moment": "^2.22.2",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.4.1",
     "tracer": "^0.9.6"
   }
 }
