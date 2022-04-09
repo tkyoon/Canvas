@@ -17,7 +17,7 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "express": "^4.16.4",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "socket.io": "^2.4.1",
     "tracer": "^0.9.6"
   }
