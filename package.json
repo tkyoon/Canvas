@@ -16,7 +16,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "moment": "^2.22.2",
     "socket.io": "^2.4.1",
     "tracer": "^0.9.6"
